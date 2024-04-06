@@ -62,7 +62,8 @@ class AnaSayfa: UIViewController {
     }
 }
 
-extension AnaSayfa: UICollectionViewDelegate, UICollectionViewDataSource {
+extension AnaSayfa: UICollectionViewDelegate, UICollectionViewDataSource, CellProtocol {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filmlerListesi.count
     }
@@ -79,12 +80,20 @@ extension AnaSayfa: UICollectionViewDelegate, UICollectionViewDataSource {
         cell.layer.borderWidth = 0.3
         cell.layer.cornerRadius = 10
         
+        cell.cellProtocol = self
+        cell.indexPath = indexPath
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let film = filmlerListesi[indexPath.row]
         performSegue(withIdentifier: "toFilmDetail", sender: film)
+    }
+    
+    func sepeteEkle(indexPath: IndexPath) {
+        let film = filmlerListesi[indexPath.row]
+        print("\(film.ad!) sepete eklendi")
     }
 }
 
