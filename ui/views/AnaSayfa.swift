@@ -11,25 +11,17 @@ class AnaSayfa: UIViewController {
 
     @IBOutlet weak var filmlerCollectionView: UICollectionView!
     var filmlerListesi = [Filmler]()
+    var viewModel = AnasayfaViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupCollectionView()
         
-        let f1 = Filmler(id: 1, ad: "anadoluda", resim: "anadoluda", fiyat: 10)
-        let f2 = Filmler(id: 2, ad: "django", resim: "django", fiyat: 20)
-        let f3 = Filmler(id: 3, ad: "inception", resim: "inception", fiyat: 30)
-        let f4 = Filmler(id: 4, ad: "interstellar", resim: "interstellar", fiyat: 40)
-        let f5 = Filmler(id: 5, ad: "thehatefuleight", resim: "thehatefuleight", fiyat: 50)
-        let f6 = Filmler(id: 6, ad: "thepianist", resim: "thepianist", fiyat: 60)
-        
-        filmlerListesi.append(f1)
-        filmlerListesi.append(f2)
-        filmlerListesi.append(f3)
-        filmlerListesi.append(f4)
-        filmlerListesi.append(f5)
-        filmlerListesi.append(f6)
+        _ = viewModel.filmlerListesi.subscribe(onNext: { liste in
+            self.filmlerListesi = liste
+            self.filmlerCollectionView.reloadData()
+        })
     }
     
     func setupCollectionView() {
@@ -51,7 +43,7 @@ class AnaSayfa: UIViewController {
         
         filmlerCollectionView.collectionViewLayout = tasarim
     }
-    
+      
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toFilmDetail" {
             if let film = sender as? Filmler {
